@@ -7,6 +7,8 @@ import time
 import pygame
 
 import sokoban
+from depth_first_search import *
+
 
 print("Start Game")
 
@@ -43,5 +45,8 @@ while 1:
                 # pygame.display.update()
                 # time.sleep(5)
                 # game.move(1, 0, True)
-                game.autoSolve()
+                # game.print_matrix()
+                auto_solve_dfs(game)
     pygame.display.update()
+
+
