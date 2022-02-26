@@ -11,12 +11,13 @@ class State:
 
     def __init__(self, crate_position, man_position, wall_position, crate_destination):
         self.crate_position = crate_position
-        self.man_position = man_position,
+        self.man_position = man_position
         self.crate_destination = crate_destination
         self.wall_position = wall_position
 
     def move(self,direction):
-        self.man_position
+        pass
+        # self.man_position
 
 
 # class FinalState:

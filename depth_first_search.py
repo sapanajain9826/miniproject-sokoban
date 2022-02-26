@@ -1,9 +1,4 @@
-import sys
-
 from state_space import *
-
-import numpy as np
-from sokoban import *
 
 
 def create_state(my_game):
@@ -17,17 +12,17 @@ def create_state(my_game):
         col_index = 0
         for char in row:
             col_index = col_index + 1
-            sys.stdout.write(char)
-            sys.stdout.flush()
+            # sys.stdout.write(char)
+            # sys.stdout.flush()
             if char == '@':
                 man_position = [col_index, row_index]
             if char == '$':
-                crate_position.append([col_index, row_index])
+                crate_position.append((col_index, row_index))
             if char == '.':
-                crate_destination.append([col_index, row_index])
+                crate_destination.append((col_index, row_index))
             if char == '#':
-                wall_position.append([col_index, row_index])
-        sys.stdout.write('\n')
+                wall_position.append((col_index, row_index))
+        # sys.stdout.write('\n')
     return State(crate_position, man_position, wall_position, crate_destination)
 
 
@@ -63,7 +58,7 @@ def check_move_legal(game_state, move):
     """
     move is legal if the man or crate new position is empty
     """
-    man_position = game_state.man_position[0]
+    man_position = game_state.man_position
     if is_position_empty(game_state, move, man_position):
         return True
     else:
@@ -76,9 +71,9 @@ def get_possible_moves(game_state):
         if check_move_legal(game_state, m):
             moves.append(m)
             # print('legal move ' + m)
-        # else:
-        #     print('not legal move ' + m)a
-    # print('I came here')
+        else:
+            pass
+            # print('not legal move ' + m)a
     return moves
 
 
@@ -86,5 +81,6 @@ def auto_solve_dfs(my_game):
     game_state = create_state(my_game)
     number_of_moves = 0
     print(get_possible_moves(game_state))
-    print('algo complete')
+
+    print('Good job ! Algorithm Complete')
     return 1
