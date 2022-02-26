@@ -46,7 +46,7 @@ while 1:
                 # time.sleep(5)
                 # game.move(1, 0, True)
                 # game.print_matrix()
-                auto_solve_dfs(game)
+                test_basic_structure(game)
     pygame.display.update()
 
 
