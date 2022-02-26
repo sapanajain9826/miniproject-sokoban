@@ -6,13 +6,13 @@ import numpy as np
 from sokoban import *
 
 
-def create_initial_state(mygame):
+def create_state(my_game):
     row_index = 0
     crate_position = []
     crate_destination = []
     wall_position = []
     man_position = []
-    for row in mygame.matrix:
+    for row in my_game.matrix:
         row_index = row_index + 1
         col_index = 0
         for char in row:
@@ -21,18 +21,14 @@ def create_initial_state(mygame):
             sys.stdout.flush()
             if char == '@':
                 man_position = [col_index, row_index]
-                # print(man_position)
             if char == '$':
                 crate_position.append([col_index, row_index])
-                # print(crate_position)
             if char == '.':
                 crate_destination.append([col_index, row_index])
-                # print(crate_destination)
             if char == '#':
                 wall_position.append([col_index, row_index])
-                # print(wall_position)
         sys.stdout.write('\n')
-    return InitialState(crate_position, man_position, wall_position, crate_destination)
+    return State(crate_position, man_position, wall_position, crate_destination)
 
 
 def get_new_position(old_position, move):
@@ -50,15 +46,12 @@ def get_new_position(old_position, move):
     return new_position
 
 
-def is_position_empty(game_initial_state, move, man_current_position):
+def is_position_empty(game_state, move, man_current_position):
     future_position = get_new_position(man_current_position, move)
-    # print('future position' + str(future_position))
-    if future_position in game_initial_state.wall_position:
-        # print('wall present')
+    if future_position in game_state.wall_position:
         return False
-    elif future_position in game_initial_state.crate_position:
-        # print('checking crate')
-        if is_position_empty(game_initial_state, move, future_position):
+    elif future_position in game_state.crate_position:
+        if is_position_empty(game_state, move, future_position):
             return True
         else:
             return False
@@ -66,37 +59,32 @@ def is_position_empty(game_initial_state, move, man_current_position):
         return True
 
 
-def check_move_legal(current_state, move, game_initial_state):
+def check_move_legal(game_state, move):
     """
     move is legal if the man or crate new position is empty
     """
-    man_position = current_state.man_position[0]
-    # print('man position' + str(man_position))
-    if is_position_empty(game_initial_state, move, man_position):
+    man_position = game_state.man_position[0]
+    if is_position_empty(game_state, move, man_position):
         return True
     else:
         return False
 
 
-def get_possible_moves(current_state, game_initial_state):
-    for move in ['l', 'r', 'u', 'd']:
-        if check_move_legal(current_state, move, game_initial_state):
-            print('legal move ' + move)
-        else:
-            print('not legal move ' + move)
-    print('I came here')
-    return 1
+def get_possible_moves(game_state):
+    moves =[]
+    for m in ['l', 'r', 'u', 'd']:
+        if check_move_legal(game_state, m):
+            moves.append(m)
+            # print('legal move ' + m)
+        # else:
+        #     print('not legal move ' + m)a
+    # print('I came here')
+    return moves
 
 
-def auto_solve_dfs(mygame):
-    game_initial_state = create_initial_state(mygame)
-    game_final_state = FinalState(game_initial_state.man_position, game_initial_state.wall_position,
-                                  game_initial_state.crate_destination)
-    # print(game_initial_state.__dict__)
-    # print(game_final_state.__dict__)
+def auto_solve_dfs(my_game):
+    game_state = create_state(my_game)
     number_of_moves = 0
-    current_state = State(game_initial_state.crate_position, game_initial_state.man_position)
-    get_possible_moves(current_state, game_initial_state)
-    # game_current_state = State(game_initial_state.crate_position, game_initial_state.man_position,)
+    print(get_possible_moves(game_state))
     print('algo complete')
     return 1
