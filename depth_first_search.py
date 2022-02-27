@@ -6,6 +6,9 @@ from state_space import *
 
 
 def create_state(my_game):
+    """
+    from the game board of pygame, read in the information to generate an object of the class State
+    """
     row_index = 0
     crate_position = []
     crate_destination = []
@@ -36,50 +39,14 @@ def create_state(my_game):
     return State(crate_position, man_position, wall_position, crate_destination, [])
 
 
-# def searchold(board):
-#     start = time()
-#     nodes_generated = 0
-#     nodes_repeated = 0
-#     if board.is_win():
-#         end = time()
-#         print_results(board, 1, 0, 0, 1, end - start)
-#         return board
-#     node = deepcopy(board)
-#     nodes_generated += 1
-#     frontier = MyQueue()
-#     frontier.push(node)
-#     explored = set()
-#     keepLooking = True
-#     while keepLooking:
-#         if frontier.isEmpty():
-#             print "Solution not found"
-#             return
-#         else:
-#             currNode = frontier.pop()
-#             moves = currNode.moves_available()
-#             currNode.fboxes = frozenset(currNode.boxes)
-#             explored.add(currNode)
-#             for m in moves:
-#                 child = deepcopy(currNode)
-#                 nodes_generated += 1
-#                 child.move(m)
-#                 if child not in explored:
-#                     if child.is_win():
-#                         end = time()
-#                         print_results(child, nodes_generated, nodes_repeated, len(
-#                                       frontier), len(explored), end - start)
-#                         return child
-#                     frontier.push(child)
-#                 else:
-#                     nodes_repeated += 1
-
 def search(my_game):
+    """
+        Breadth first search algorithm
+    """
     start = time()
     nodes_generated = 0
     nodes_repeated = 0
     game_state = create_state(my_game)
-    # game_initial_state = game_state
-    # print(game_state.is_game_complete())
     print(game_state.__dict__)
     if game_state.is_game_complete():
         end = time()
@@ -90,24 +57,22 @@ def search(my_game):
     frontier = queue.LifoQueue()
     frontier.put_nowait(node)
     explored = set()
-    keepLooking = True
-    while keepLooking:
+    keep_looking = True
+    while keep_looking:
         if frontier.empty():
             print("Solution not found")
             return
         else:
-            currNode = frontier.get_nowait()
-            moves = currNode.get_possible_moves()
+            curr_node = frontier.get_nowait()
+            moves = curr_node.get_possible_moves()
             crate_position_a = set()
-            for a in currNode.crate_position:
+            for a in curr_node.crate_position:
                 crate_position_a.add(tuple(a))
-            currNode.crate_position_hash = frozenset(crate_position_a)
-            explored.add(currNode)
+            curr_node.crate_position_hash = frozenset(crate_position_a)
+            explored.add(curr_node)
             for m in moves:
-                # print('m ' + m + 'node gen ' + str(nodes_generated))
-                child = deepcopy(currNode)
+                child = deepcopy(curr_node)
                 nodes_generated += 1
-                # print(child.print_directions())
                 child.move(m)
                 if child not in explored:
                     if child.is_game_complete():
@@ -122,7 +87,6 @@ def search(my_game):
 
 def test_basic_structure(my_game):
     game_state = create_state(my_game)
-    game_initial_state = game_state
     print(game_state.is_game_complete())
     print(game_state.__dict__)
     game_state.move('d')
@@ -131,7 +95,5 @@ def test_basic_structure(my_game):
     game_state.move('r')
     print(game_state.__dict__)
     print(game_state.print_directions())
-    number_of_moves = 0
     print(game_state.get_possible_moves())
-    print('Good job ! Algorithm Complete')
     return 1

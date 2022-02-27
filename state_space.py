@@ -1,4 +1,7 @@
 def get_new_position(old_position, move):
+    """
+    get new position based of current position of the man and move direction
+    """
     if move == 'l':
         new_position = [old_position[0] - 1, old_position[1]]
     elif move == 'r':
@@ -14,6 +17,9 @@ def get_new_position(old_position, move):
 
 
 def is_position_empty(game_state, move, current_position):
+    """
+    check if proposed new position is empty and if there is a crate can it move
+    """
     crate_moved = False
     future_position = get_new_position(current_position, move)
     if future_position in game_state.wall_position:
@@ -30,7 +36,7 @@ def is_position_empty(game_state, move, current_position):
 
 def check_move_legal(game_state, move):
     """
-    move is legal if the man or crate new position is empty
+    move is legal if the new position is empty
     """
     if is_position_empty(game_state, move, game_state.man_position)[0]:
         return True
@@ -38,17 +44,20 @@ def check_move_legal(game_state, move):
         return False
 
 
-class UniqueSubState:
-    def __init__(self, crate_position, man_position):
-        self.crate_position = set()
-        self.man_position = man_position
-        self.crate_position_hash = frozenset()
-
-    def add_box(self, position):
-        self.crate_position.add(position)
+def print_results(game_state, generated_nodes, repeated_nodes, graph_level, explored_nodes, total_time):
+    print("Solution: " + game_state.print_directions())
+    print("Nodes generated: " + str(generated_nodes))
+    print("Nodes repeated: " + str(repeated_nodes))
+    print("Fringe nodes: " + str(graph_level))
+    print("Explored nodes (including repeated): " + str(explored_nodes))
+    print('Execution Time: ' + str(total_time) + ' secs')
 
 
 class State:
+    """
+        class to define the current state from the pygame board and to track the movement across the board during the
+        search algorithm
+    """
 
     def __init__(self, crate_position, man_position, wall_position, crate_destination, list_of_moves):
         self.list_of_moves = list_of_moves
@@ -95,30 +104,14 @@ class State:
         for m in ['l', 'r', 'u', 'd']:
             if check_move_legal(self, m):
                 moves.append(m)
-                # print('legal move ' + m)
-            else:
-                pass
-                # print('not legal move ' + m)a
         return moves
-
-    def generate_sub_state(self):
-        return UniqueSubState(self.crate_position, self.man_position)
 
     def __hash__(self):
         return hash((self.crate_position_hash, tuple(self.man_position)))
 
     def __eq__(self, other):
-        if sorted(self.crate_position) == sorted(other.crate_position) and sorted(self.man_position) == sorted(other.man_position):
+        if sorted(self.crate_position) == sorted(other.crate_position) and sorted(self.man_position) \
+                == sorted(other.man_position):
             return True
         else:
             return False
-
-
-def print_results(board, gen, rep, fri, expl, dur):
-    print("\n1. Breadth-first search")
-    print("Solution: " + board.print_directions())
-    print("Nodes generated: " + str(gen))
-    print("Nodes repeated: " + str(rep))
-    print("Fringe nodes: " + str(fri))
-    print("Explored nodes: " + str(expl))
-    print('Duration: ' + str(dur) + ' secs')

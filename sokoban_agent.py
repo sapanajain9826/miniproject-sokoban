@@ -57,11 +57,8 @@ while 1:
     while automatic_player:
         try:
             sokoban.print_game(game.get_matrix(), screen)
-            # pygame.display.update()
-            sokoban.print_game(game.get_matrix(), screen)
             pygame.display.update()
             pygame.time.delay(50)
-            #
             key = next(solution)
             print(key)
             if game.is_completed():
