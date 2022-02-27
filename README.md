@@ -7,11 +7,9 @@ pygame can be installed using pip
 ```pip install pygame```
 
 ## Running the project
-2. Clone the mini-project submission from GitHub by the command 
-```git clone https://github.com/sapanajain9826/miniproject-sokoban```
-3. Go into the project directory and run 
+1. Go into the project directory and run 
 ```python3 sokoban_agent.py``` 
-4. Once the pygame window pops up, the following keyboard keys are available
+2. Once the pygame window pops up, the following keyboard keys are available
    1. “a” key for the automatic search algorithm to start and after the solution is found, replay the moves to confirm if the solution is correct.
    2. “u” key to go up manually
    3. “d” key to go down manually
@@ -21,3 +19,7 @@ pygame can be installed using pip
    7. “q” key to quit the game
 The automatic agent should run as seen below as a gif 
    ![Alt Text](Animation_sokoban_final_level55.gif)
+
+
+## References
+Based on the Sokoban game implementation at https://github.com/morenod/sokoban 
