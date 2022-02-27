@@ -38,16 +38,14 @@ def check_move_legal(game_state, move):
         return False
 
 
-def get_possible_moves(game_state):
-    moves = []
-    for m in ['l', 'r', 'u', 'd']:
-        if check_move_legal(game_state, m):
-            moves.append(m)
-            # print('legal move ' + m)
-        else:
-            pass
-            # print('not legal move ' + m)a
-    return moves
+class UniqueSubState:
+    def __init__(self, crate_position, man_position):
+        self.crate_position = set()
+        self.man_position = man_position
+        self.crate_position_hash = frozenset()
+
+    def add_box(self, position):
+        self.crate_position.add(position)
 
 
 class State:
@@ -58,7 +56,10 @@ class State:
         self.man_position = man_position
         self.crate_destination = crate_destination
         self.wall_position = wall_position
-
+        self.crate_position_a = set()
+        for a in crate_position:
+            self.crate_position_a.add(tuple(a))
+        self.crate_position_hash = frozenset(self.crate_position_a)
 
     def move(self, direction):
         position_empty, crate_moved = is_position_empty(self, direction, self.man_position)
@@ -77,7 +78,7 @@ class State:
             return False
 
     def is_game_complete(self):
-        if self.crate_position == self.crate_destination:
+        if sorted(self.crate_position) == sorted(self.crate_destination):
             return True
         else:
             return False
@@ -88,3 +89,36 @@ class State:
             chars += d
             chars += ', '
         return chars
+
+    def get_possible_moves(self):
+        moves = []
+        for m in ['l', 'r', 'u', 'd']:
+            if check_move_legal(self, m):
+                moves.append(m)
+                # print('legal move ' + m)
+            else:
+                pass
+                # print('not legal move ' + m)a
+        return moves
+
+    def generate_sub_state(self):
+        return UniqueSubState(self.crate_position, self.man_position)
+
+    def __hash__(self):
+        return hash((self.crate_position_hash, tuple(self.man_position)))
+
+    def __eq__(self, other):
+        if sorted(self.crate_position) == sorted(other.crate_position) and sorted(self.man_position) == sorted(other.man_position):
+            return True
+        else:
+            return False
+
+
+def print_results(board, gen, rep, fri, expl, dur):
+    print("\n1. Breadth-first search")
+    print("Solution: " + board.print_directions())
+    print("Nodes generated: " + str(gen))
+    print("Nodes repeated: " + str(rep))
+    print("Fringe nodes: " + str(fri))
+    print("Explored nodes: " + str(expl))
+    print('Duration: ' + str(dur) + ' secs')

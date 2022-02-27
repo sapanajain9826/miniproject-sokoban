@@ -195,8 +195,6 @@ class Game:
                 self.set_content(current[0] + x, current[1] + y, '+')
                 if save: self.queue.put((x, y, True))
 
-    def autoSolve(self):
-        pass
 
 
 def print_game(matrix, screen):
@@ -287,7 +285,7 @@ def ask(screen, question):
 
 def start_game():
     # start = pygame.display.set_mode((320, 240))
-    level = 1  # int(ask(start, "Select Level"))
+    level = 55  # int(ask(start, "Select Level"))
     if level > 0:
         return level
     else:
@@ -337,7 +335,6 @@ background = 255, 226, 191
 if __name__ == "__main__":
     # stuff only to run when not called via 'import' here
     pygame.init()
-
     level = start_game()
     game = Game('levels', level)
     size = game.load_size()

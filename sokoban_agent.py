@@ -2,13 +2,12 @@
 This is an automated sokoban agent
 """
 import sys
-import time
-
+from time import sleep
+import time as time
 import pygame
 
 import sokoban
 from depth_first_search import *
-
 
 print("Start Game")
 
@@ -19,10 +18,21 @@ game = sokoban.Game('levels', level)
 size = game.load_size()
 screen = pygame.display.set_mode(size)
 
+sleep_time = 0.75
+game_state = []
+automatic_player = False
+
+
+def create_gen(moves_list):
+    for my_key in moves_list:
+        yield my_key
+
+
 while 1:
     if game.is_completed():
         sokoban.display_end(screen)
     sokoban.print_game(game.get_matrix(), screen)
+    solution =[]
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit(0)
@@ -40,13 +50,32 @@ while 1:
             elif event.key == pygame.K_d:
                 game.undo_move()
             elif event.key == pygame.K_a:
-                # time.sleep(0.1)
-                # game.move(0, -1, True)
-                # pygame.display.update()
-                # time.sleep(5)
-                # game.move(1, 0, True)
-                # game.print_matrix()
-                test_basic_structure(game)
+                game_state = search(game)
+                solution = (my_key for my_key in game_state.list_of_moves)
+                automatic_player = True
+                break
+    while automatic_player:
+        try:
+            sokoban.print_game(game.get_matrix(), screen)
+            # pygame.display.update()
+            sokoban.print_game(game.get_matrix(), screen)
+            pygame.display.update()
+            pygame.time.delay(50)
+            #
+            key = next(solution)
+            print(key)
+            if game.is_completed():
+                sokoban.display_end(screen)
+            if key == 'l':
+                game.move(-1, 0, True)
+            elif key == 'r':
+                game.move(1, 0, True)
+            elif key == 'u':
+                game.move(0, -1, True)
+            elif key == 'd':
+                game.move(0, 1, True)
+        except StopIteration:
+            automatic_player = False
+            print('game completed')
+            break
     pygame.display.update()
-
-
