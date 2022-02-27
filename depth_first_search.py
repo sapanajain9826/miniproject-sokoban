@@ -47,10 +47,9 @@ def search(my_game):
     nodes_generated = 0
     nodes_repeated = 0
     game_state = create_state(my_game)
-    print(game_state.__dict__)
     if game_state.is_game_complete():
         end = time()
-        print_results(my_game, 1, 0, 0, 1, end - start)
+        my_game.print_results(1, 0, 0, 1, end - start)
         return my_game
     node = game_state
     nodes_generated += 1
@@ -77,8 +76,8 @@ def search(my_game):
                 if child not in explored:
                     if child.is_game_complete():
                         end = time()
-                        print_results(child, nodes_generated, nodes_repeated,
-                                      frontier.qsize(), len(explored), end - start)
+                        child.print_results(nodes_generated, nodes_repeated,
+                                            frontier.qsize(), len(explored), end - start)
                         return child
                     frontier.put_nowait(child)
                 else:

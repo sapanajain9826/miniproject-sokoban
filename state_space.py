@@ -44,13 +44,7 @@ def check_move_legal(game_state, move):
         return False
 
 
-def print_results(game_state, generated_nodes, repeated_nodes, graph_level, explored_nodes, total_time):
-    print("Solution: " + game_state.print_directions())
-    print("Nodes generated: " + str(generated_nodes))
-    print("Nodes repeated: " + str(repeated_nodes))
-    print("Fringe nodes: " + str(graph_level))
-    print("Explored nodes (including repeated): " + str(explored_nodes))
-    print('Execution Time: ' + str(total_time) + ' secs')
+
 
 
 class State:
@@ -115,3 +109,11 @@ class State:
             return True
         else:
             return False
+
+    def print_results(self, generated_nodes, repeated_nodes, graph_level, explored_nodes, total_time):
+        print("Solution: " + self.print_directions())
+        print("Nodes generated: " + str(generated_nodes))
+        print("Nodes repeated: " + str(repeated_nodes))
+        print("Fringe nodes: " + str(graph_level))
+        print("Explored nodes (including repeated): " + str(explored_nodes))
+        print('Execution Time: ' + str(total_time) + ' secs')

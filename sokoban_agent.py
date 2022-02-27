@@ -2,8 +2,7 @@
 This is an automated sokoban agent
 """
 import sys
-from time import sleep
-import time as time
+
 import pygame
 
 import sokoban
@@ -24,6 +23,9 @@ automatic_player = False
 
 
 def create_gen(moves_list):
+    """
+    generator to get moves to show automated play
+    """
     for my_key in moves_list:
         yield my_key
 
@@ -60,7 +62,6 @@ while 1:
             pygame.display.update()
             pygame.time.delay(50)
             key = next(solution)
-            print(key)
             if game.is_completed():
                 sokoban.display_end(screen)
             if key == 'l':
