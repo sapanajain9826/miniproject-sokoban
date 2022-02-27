@@ -44,9 +44,6 @@ def check_move_legal(game_state, move):
         return False
 
 
-
-
-
 class State:
     """
         class to define the current state from the pygame board and to track the movement across the board during the

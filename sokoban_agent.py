@@ -34,7 +34,7 @@ while 1:
     if game.is_completed():
         sokoban.display_end(screen)
     sokoban.print_game(game.get_matrix(), screen)
-    solution =[]
+    solution = []
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit(0)

@@ -1,6 +1,7 @@
-import sys
-import pygame
 import queue
+import sys
+
+import pygame
 
 
 class Game:
