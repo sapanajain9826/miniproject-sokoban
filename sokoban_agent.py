@@ -6,7 +6,7 @@ import sys
 import pygame
 
 import sokoban
-from depth_first_search import *
+from breadth_first_search import *
 
 print("Start Game")
 
